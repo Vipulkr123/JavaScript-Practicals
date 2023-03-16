@@ -7,6 +7,8 @@ const operators = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '*(', ')', 
 
 let allowNum = false;
 let dotCheck = false;
+let checkDegree = false;
+let checkSecondFun = false;
 class Calculator {
     constructor(displayText, memory = []) {
         this.displayText = displayText;
@@ -105,13 +107,16 @@ class Calculator {
                 this.currentOperand = Math.exp(this.currentOperand);
                 break;
             case 'sin':
-                this.currentOperand = Math.sin(this.currentOperand * Math.PI / 180);
+                if (checkDegree === true) { this.currentOperand = Math.sin(this.currentOperand * Math.PI / 180); }
+                else { this.currentOperand = Math.sin(this.currentOperand); }
                 break;
             case 'cos':
-                this.currentOperand = Math.cos(this.currentOperand * Math.PI / 180);
+                if (checkDegree === true) { this.currentOperand = Math.cos(this.currentOperand * Math.PI / 180); }
+                else { this.currentOperand = Math.cos(this.currentOperand); }
                 break;
             case 'tan':
-                this.currentOperand = Math.round(Math.tan(this.currentOperand * Math.PI / 180));
+                if (checkDegree === true) { this.currentOperand = Math.tan(this.currentOperand * Math.PI / 180); }
+                else { this.currentOperand = Math.tan(this.currentOperand); }
                 break;
             case 'rand':
                 this.currentOperand = Math.random();
@@ -125,8 +130,14 @@ class Calculator {
             case 'ceil':
                 this.currentOperand = Math.ceil(this.currentOperand);
                 break;
+            case 'fe':
+                this.currentOperand = Number(this.currentOperand).toExponential();
+                break;
             case 'nd':
-                this.secondfn();
+                this.secondfunction();
+                break;
+            case 'deg':
+                this.degFunction();
                 break;
             default:
                 return;
@@ -162,6 +173,18 @@ class Calculator {
         };
     }
 
+    secondfunction() {
+        if (checkSecondFun === false) {
+            checkSecondFun = true;
+            this.secondfn();
+            document.querySelector('.nd').style = 'background-color: #3469c1 !important';
+        } else {
+            checkSecondFun = false;
+            this.secondfn();
+            document.querySelector('.nd').style = 'background-color: #fff !important';
+        }
+    }
+
     secondfn() {
         const secondFun = document.querySelectorAll('.ndfun');
         const secondFn = document.querySelectorAll('.secondfn');
@@ -180,6 +203,14 @@ class Calculator {
             secondFn.forEach(element => {
                 element.style = "display:none";
             });
+        }
+    }
+
+    degFunction() {
+        if (checkDegree === true) { checkDegree = false; document.querySelector('.degree').style = 'background-color: #f5f5f5 !important' }
+        else {
+            checkDegree = true;
+            document.querySelector('.degree').style = 'background-color: #3469c1 !important';
         }
     }
 
